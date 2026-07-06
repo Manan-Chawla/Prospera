@@ -5,7 +5,7 @@ from fastapi.responses import FileResponse
 from typing import Optional, List
 import os
 
-from backend.data_generator import generate_dataset
+from data_generator import generate_dataset
 from scoring import estimate_income, score_lead, all_eligibility, LOAN_PRODUCT_PARAMS
 from models import LeadResult, Customer
 
