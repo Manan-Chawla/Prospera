@@ -36,7 +36,7 @@
   --shadow-lg: 0 12px 32px rgba(20, 23, 26, 0.12);
   
   --topbar-height: 56px;
-  --sidebar-width: 240px;
+  --sidebar-width: clamp(220px, 18vw, 260px);
 }
 
 /* ============ Core Reset ============ */
@@ -48,7 +48,7 @@ body {
   font-family: var(--body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-size: 14px;
+  font-size:clamp(14px,1vw,16px);
   line-height: 1.5;
   overflow-x: hidden;
 }
@@ -72,7 +72,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
-  padding: 0 1rem;
+  padding:0 clamp(12px,3vw,24px);
   gap: 1rem;
   position: sticky;
   top: 0;
@@ -106,7 +106,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 
 .topbar-search {
   flex: 1;
-  max-width: 480px;
+  max-width:min(480px,45vw);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -246,7 +246,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
 .status-sub { font-size: 11px; color: var(--text-3); }
 
 /* ============ Content Workspace ============ */
-.main { flex: 1; padding: 1.5rem 2rem; max-width: 1440px; margin: 0 auto; width: 100%; }
+.main { flex: 1; padding:clamp(16px,2vw,32px); max-width: 1440px; margin: 0 auto; width: 100%; }
 .view { display: none; }
 .view.active { display: block; animation: fadeUp .2s cubic-bezier(0.16, 1, 0.3, 1); }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
@@ -268,7 +268,7 @@ a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible
   background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--kpi-accent, var(--brand));
   border-radius: var(--radius); padding: 16px; box-shadow: var(--shadow-sm);
 }
-.kpi-label { font-size: 11px; color: var(--text-2); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+.kpi-label { font-size:clamp(1.6rem,3vw,2rem); color: var(--text-2); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
 .kpi-value { font-family: var(--display); font-size: 24px; font-weight: 700; margin-top: 4px; line-height: 1.2; }
 .kpi-sub { font-size: 12px; color: var(--text-3); margin-top: 4px; }
 .kpi-sub.pos { color: var(--success); font-weight: 600; }
@@ -589,4 +589,198 @@ table.crm-table tbody td { padding: 12px 14px; border-bottom: 1px solid var(--bo
   .bulk-bar .btn-link { margin-left: 0; padding-top: 4px; }
 
   .drawer { width: 100%; }
+}
+
+
+
+/* ===============================
+   RESPONSIVE IMPROVEMENTS
+================================ */
+
+/* Large Tablet */
+@media (max-width:1024px){
+
+.main{
+padding:20px;
+}
+
+.page-title-row{
+flex-direction:column;
+align-items:flex-start;
+}
+
+.title-actions{
+width:100%;
+flex-wrap:wrap;
+}
+
+.card{
+padding:16px;
+}
+
+}
+
+/* Tablet */
+
+@media (max-width:768px){
+
+.topbar-search{
+display:none;
+}
+
+.sidebar{
+position:fixed;
+left:-100%;
+top:56px;
+height:calc(100vh - 56px);
+width:260px;
+transition:.3s;
+z-index:100;
+}
+
+.sidebar.show{
+left:0;
+}
+
+.main{
+padding:16px;
+}
+
+.kpi-row,
+.grid-2,
+.product-grid,
+.method-grid,
+.kanban-board{
+
+grid-template-columns:1fr;
+
+}
+
+.filter-bar{
+
+flex-direction:column;
+align-items:stretch;
+
+}
+
+.filter-group{
+
+width:100%;
+
+}
+
+.filter-group select{
+
+width:100%;
+
+}
+
+.title-actions{
+
+display:grid;
+
+grid-template-columns:1fr 1fr;
+
+gap:10px;
+
+}
+
+.drawer{
+
+width:100%;
+
+}
+
+}
+
+/* Mobile */
+
+@media (max-width:576px){
+
+.topbar{
+
+padding:0 12px;
+
+}
+
+.brand-name{
+
+display:none;
+
+}
+
+.page-title-row h1{
+
+font-size:1.5rem;
+
+}
+
+.card{
+
+padding:14px;
+
+}
+
+.btn{
+
+width:100%;
+
+}
+
+.title-actions{
+
+grid-template-columns:1fr;
+
+}
+
+.crm-table{
+
+font-size:12px;
+
+}
+
+.modal{
+
+width:100%;
+
+margin:10px;
+
+}
+
+}
+
+/* Small Mobile */
+
+@media (max-width:400px){
+
+body{
+
+font-size:13px;
+
+}
+
+.main{
+
+padding:12px;
+
+}
+
+.kpi-card{
+
+padding:12px;
+
+}
+
+.card{
+
+padding:12px;
+
+}
+
+.histogram{
+
+height:100px;
+
+}
+
 }
