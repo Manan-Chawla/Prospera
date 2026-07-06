@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prospera CRM — Retail Lending Pipeline</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ============ TOP BAR ============ -->
+<header class="topbar">
+  <div class="topbar-left">
+    <div class="brand">
+      <div class="brand-mark">P</div>
+      <span class="brand-name">Prospera</span>
+      <span class="brand-badge">Lending CRM</span>
+    </div>
+  </div>
+
+  <div class="topbar-search">
+    <svg class="ico" viewBox="0 0 24 24" fill="none"><path d="M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm10 2-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    <input type="text" id="globalSearch" placeholder="Search leads by name, ID, or city…" autocomplete="off">
+    <kbd>/</kbd>
+  </div>
+
+  <div class="topbar-right">
+    <button class="btn btn-primary" id="btnNewLead">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+      New Lead
+    </button>
+    <button class="icon-btn" id="btnExport" title="Export CSV">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M12 3v12m0 0-4-4m4 4 4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <button class="icon-btn has-dot" id="btnNotif" title="Notifications">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M18 8a6 6 0 1 0-12 0c0 3.5-1 5-2 7h16c-1-2-2-3.5-2-7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.5 20a2.5 2.5 0 0 0 5 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+    <div class="avatar-menu">
+      <div class="avatar">RS</div>
+    </div>
+  </div>
+</header>
+
+<div class="shell">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <div class="nav-section">
+      <span class="nav-heading">Sales</span>
+      <button class="nav-item active" data-view="overview">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M4 12 12 4l8 8M6 10v10h12V10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Home
+      </button>
+      <button class="nav-item" data-view="leads">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        Leads
+        <span class="nav-count" id="navLeadCount">—</span>
+      </button>
+      <button class="nav-item" data-view="pipeline">
+        <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="5" height="16" rx="1" stroke="currentColor" stroke-width="1.8"/><rect x="10" y="8" width="5" height="12" rx="1" stroke="currentColor" stroke-width="1.8"/><rect x="17" y="11" width="4" height="9" rx="1" stroke="currentColor" stroke-width="1.8"/></svg>
+        Pipeline
+      </button>
+    </div>
+
+    <div class="nav-section">
+      <span class="nav-heading">Insights</span>
+      <button class="nav-item" data-view="products">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M3 17h4l3-9 4 12 3-7h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Loan Demand
+      </button>
+      <button class="nav-item" data-view="methodology">
+        <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.8"/><path d="M12 8v5l3 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        Methodology
+      </button>
+    </div>
+
+    <div class="sidebar-foot">
+      <div class="status-card">
+        <span class="status-dot"></span>
+        <div>
+          <div class="status-title">Scoring engine live</div>
+          <div class="status-sub" id="engineStatus">connecting…</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main class="main">
+
+    <!-- OVERVIEW -->
+    <section id="view-overview" class="view active">
+      <div class="crumb">Home</div>
+      <div class="page-title-row">
+        <div>
+          <h1>Good to see you — here's today's lending pipeline.</h1>
+          <p class="subtext">Leads ranked by real repayment capacity, not just bureau score.</p>
+        </div>
+        <div class="title-actions">
+          <button class="btn btn-secondary" id="btnExport2">Export CSV</button>
+          <button class="btn btn-primary" id="btnNewLead2">+ New Lead</button>
+        </div>
+      </div>
+
+      <div class="kpi-row" id="kpiRow"></div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-head">
+            <h3>Score distribution</h3>
+            <span class="tag">180 accounts</span>
+          </div>
+          <div id="histogram" class="histogram"></div>
+        </div>
+        <div class="card">
+          <div class="card-head">
+            <h3>Conversion vs. target</h3>
+            <span class="tag">goal &gt; 30%</span>
+          </div>
+          <div class="conv-block" id="convBlock"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <h3>Top of funnel</h3>
+          <span class="tag">highest-quality leads — click a row to open</span>
+        </div>
+        <div id="topLeadsTable" class="table-wrap"></div>
+      </div>
+    </section>
+
+    <!-- LEADS -->
+    <section id="view-leads" class="view">
+      <div class="crumb">Home <span>›</span> Leads</div>
+      <div class="page-title-row">
+        <div>
+          <h1>Lead list</h1>
+          <p class="subtext">Filter, sort, and act on scored prospects.</p>
+        </div>
+        <div class="title-actions">
+          <div class="view-toggle">
+            <button class="toggle-btn active" data-tableview="table">Table</button>
+            <button class="toggle-btn" data-tableview="kanban">Kanban</button>
+          </div>
+          <button class="btn btn-primary" id="btnNewLead3">+ New Lead</button>
+        </div>
+      </div>
+
+      <div class="filter-bar">
+        <div class="filter-group">
+          <label>Tier</label>
+          <select id="filterTier">
+            <option value="">All tiers</option>
+            <option value="High Quality">High Quality</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Interested product</label>
+          <select id="filterLoan">
+            <option value="">Any product</option>
+            <option value="personal_loan">Personal Loan</option>
+            <option value="home_loan">Home Loan</option>
+            <option value="mortgage_loan">Mortgage Loan</option>
+            <option value="auto_loan">Auto Loan</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>City</label>
+          <select id="filterCity"><option value="">All cities</option></select>
+        </div>
+        <div class="filter-group">
+          <label>Min. score <span class="mono" id="filterScoreVal">0</span></label>
+          <input type="range" id="filterScore" min="0" max="100" value="0">
+        </div>
+        <div class="filter-group grow">
+          <label>Sort</label>
+          <select id="filterSort">
+            <option value="score_desc">Score — high to low</option>
+            <option value="income_desc">Estimated income — high to low</option>
+            <option value="name_asc">Name — A→Z</option>
+          </select>
+        </div>
+        <button class="btn-link" id="btnClearFilters">Clear filters</button>
+      </div>
+
+      <div class="bulk-bar" id="bulkBar">
+        <span id="bulkCount">0 selected</span>
+        <button class="btn btn-sm btn-secondary" id="bulkContact">Mark Contacted</button>
+        <button class="btn btn-sm btn-secondary" id="bulkExport">Export Selected</button>
+        <button class="btn btn-sm btn-danger" id="bulkDisqualify">Disqualify</button>
+        <button class="btn-link" id="bulkClear">Clear selection</button>
+      </div>
+
+      <div id="tableViewWrap" class="card no-pad">
+        <div id="leadsTable" class="table-wrap"></div>
+      </div>
+      <div id="kanbanViewWrap" class="kanban-board" style="display:none"></div>
+    </section>
+
+    <!-- PIPELINE (stage kanban) -->
+    <section id="view-pipeline" class="view">
+      <div class="crumb">Home <span>›</span> Pipeline</div>
+      <div class="page-title-row">
+        <div>
+          <h1>Deal pipeline by stage</h1>
+          <p class="subtext">Drag a card to move a lead through the underwriting journey.</p>
+        </div>
+      </div>
+      <div class="kanban-board" id="pipelineBoard"></div>
+    </section>
+
+    <!-- PRODUCTS -->
+    <section id="view-products" class="view">
+      <div class="crumb">Home <span>›</span> Loan Demand</div>
+      <div class="page-title-row">
+        <div>
+          <h1>Where interest and capacity actually meet</h1>
+          <p class="subtext">Genuine behavioral interest vs. FOIR-cleared eligibility, by product.</p>
+        </div>
+      </div>
+      <div class="product-grid" id="productGrid"></div>
+    </section>
+
+    <!-- METHODOLOGY -->
+    <section id="view-methodology" class="view">
+      <div class="crumb">Home <span>›</span> Methodology</div>
+      <div class="page-title-row">
+        <div><h1>How a score earns trust</h1></div>
+      </div>
+      <div class="method-grid">
+        <div class="method-card"><span class="method-tag">Income</span><h3>Income estimation</h3><p>Recurring payroll-pattern credits confirm salaried income; otherwise a trimmed, haircut-adjusted aggregate inflow model covers self-employed and gig income.</p></div>
+        <div class="method-card"><span class="method-tag">20 pts</span><h3>Income confidence</h3><p>Consistency and evidence strength behind the inferred income figure.</p></div>
+        <div class="method-card"><span class="method-tag">25 pts</span><h3>Affordability</h3><p>Headroom between estimated income and existing obligations — feeds every FOIR calculation downstream.</p></div>
+        <div class="method-card"><span class="method-tag">25 pts</span><h3>Behavioral intent</h3><p>EMI-calculator use, loan-page visits, offer clicks, inquiries — real in-market signal.</p></div>
+        <div class="method-card"><span class="method-tag">15 pts</span><h3>Stability</h3><p>Account vintage and month-to-month cash-flow volatility.</p></div>
+        <div class="method-card"><span class="method-tag">15 pts</span><h3>Relationship depth</h3><p>Existing product holding and bureau standing where available.</p></div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- RECORD PANEL -->
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer"><div id="drawerContent"></div></aside>
+
+<!-- NEW LEAD MODAL -->
+<div class="modal-scrim" id="modalScrim">
+  <div class="modal" id="newLeadModal">
+    <div class="modal-head">
+      <h2>New Lead</h2>
+      <button class="icon-btn" id="modalClose">✕</button>
+    </div>
+    <form id="newLeadForm" class="modal-body">
+      <div class="form-grid">
+        <div class="field"><label>Full name *</label><input required name="name" placeholder="e.g. Ananya Rao"></div>
+        <div class="field"><label>Age *</label><input required type="number" name="age" min="21" max="65" value="30"></div>
+        <div class="field"><label>City *</label><input required name="city" placeholder="e.g. Jaipur"></div>
+        <div class="field"><label>Occupation *</label>
+          <select name="occupation_type">
+            <option value="salaried">Salaried</option>
+            <option value="self_employed">Self-employed</option>
+          </select>
+        </div>
+        <div class="field"><label>Estimated monthly income (₹) *</label><input required type="number" name="monthly_income_hint" min="5000" value="50000"></div>
+        <div class="field"><label>Existing monthly obligations (₹)</label><input type="number" name="existing_monthly_obligations" min="0" value="0"></div>
+      </div>
+      <div class="field">
+        <label>Interested in</label>
+        <div class="chip-select" id="chipSelect">
+          <label class="chip-option"><input type="checkbox" name="interested" value="personal_loan"> Personal Loan</label>
+          <label class="chip-option"><input type="checkbox" name="interested" value="home_loan"> Home Loan</label>
+          <label class="chip-option"><input type="checkbox" name="interested" value="mortgage_loan"> Mortgage Loan</label>
+          <label class="chip-option"><input type="checkbox" name="interested" value="auto_loan"> Auto Loan</label>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button type="button" class="btn btn-secondary" id="modalCancel">Cancel</button>
+        <button type="submit" class="btn btn-primary">Create lead & score</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- TOASTS -->
+<div class="toast-stack" id="toastStack"></div>
+
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
